@@ -1,0 +1,12 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package ru.itmo.java.message;
+
+message Request {
+  repeated int32 arr = 1;
+}
+
+message Response {
+  repeated int32 sortArr = 1;
+}
