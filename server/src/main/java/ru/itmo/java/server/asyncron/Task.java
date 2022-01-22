@@ -28,6 +28,7 @@ public class Task implements Runnable {
 
     @Override
     public void run() {
+//        System.out.println("context.getArray() " + context.getArray().size());
         long startTaskTime = System.currentTimeMillis();
         List<Integer> sortArr = ArrayUtils.makeSort(context.getArray());
         context.addSortArray(sortArr);

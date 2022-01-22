@@ -11,44 +11,49 @@ import java.util.List;
 
 public class Context {
     private AsynchronousSocketChannel asyncSocketChannel;
-    private ByteBuffer buffer = ByteBuffer.allocate(1024);
+    private ByteBuffer buffer;
+    private ByteBuffer sizeBuffer = ByteBuffer.allocate(4);
     private ByteBuffer writeBuffer;
     private int messageSize;
     private byte[] readyMessage;
     private List<Integer> arr;
-    public int countQueries  = 0;
+    public int countQueries = 0;
 
     public Context(AsynchronousSocketChannel asyncSocketChannel) {
         this.asyncSocketChannel = asyncSocketChannel;
     }
 
     public ByteBuffer getReadBuffer() {
+        if (buffer == null) {
+            return sizeBuffer;
+        }
         return buffer;
     }
 
     public boolean isReadyMessage() {
-        buffer.flip();
-        if (readyMessage == null) {
-
-            if (buffer.remaining() >= 4) {
-                messageSize = buffer.getInt();
-                readyMessage = new byte[messageSize];
+        if (buffer == null) {
+            if (sizeBuffer.hasRemaining()) {
+                return false;
             }
-        }
-
-        if (buffer.remaining() < messageSize) {
-            buffer.compact();
+            sizeBuffer.flip();
+            messageSize = sizeBuffer.getInt();
+            buffer = ByteBuffer.allocate(messageSize);
+            sizeBuffer.clear();
             return false;
         }
 
-        buffer.get(readyMessage);
+//        System.out.println("messageSize " + messageSize + " buffer.remaining(): " + buffer.remaining());
+        if (buffer.hasRemaining()) {
+            return false;
+        }
+        buffer.flip();
+
         try {
-            arr = new ArrayList<>(Request.parseFrom(readyMessage).getArrList());
-            readyMessage = null;
+            arr = new ArrayList<>(Request.parseFrom(buffer.array()).getArrList());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-        buffer.compact();
+        buffer = null;
         return true;
     }
 

@@ -14,7 +14,6 @@ public class Starter {
         int countQueries = Integer.parseInt(args[1]);
         Constants.COUNT_QUERIES = countQueries;
 
-
         // params
         int countClient = Integer.parseInt(args[2]);
         int delta = Integer.parseInt(args[3]);
@@ -77,15 +76,11 @@ public class Starter {
             }
             System.out.println("join");
             serverThread.join();
-            System.out.println("end join " + serverThread.isAlive());
             for (int i = 0; i < clientThreads.length; i++) {
-                System.out.println("begin i in for " + i);
                 clientThreads[i].interrupt();
                 clients[i].stop();
                 clientThreads[i].join();
-                System.out.println("i in for " + i);
             }
-            System.out.println("client interrupt");
             System.out.println("---");
         }
         System.out.println("END");
