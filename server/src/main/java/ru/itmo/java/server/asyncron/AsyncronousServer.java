@@ -13,7 +13,7 @@ public class AsyncronousServer extends AbstractServer {
     private ExecutorService threadPool = Executors.newFixedThreadPool(10);
     private CountDownLatch countDownLatch = new CountDownLatch(countClients);
     private final CountDownLatch exitClient = new CountDownLatch(1);
-    private final TestResultFixer testResultFixer = new TestResultFixer(Constants.arrAsyncTaskT, Constants.arrAsyncServerT);
+    private final TestResultFixer testResultFixer = new TestResultFixer(Constants.countClientAsyncTaskT, Constants.countClientAsyncServerT);
     public AsyncronousServer(int countClients) {
         super(countClients);
     }

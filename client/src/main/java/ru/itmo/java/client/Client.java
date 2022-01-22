@@ -25,7 +25,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        Client client = new Client(Constants.COUNT_QUERIES, Constants.WAIT_BETWEEN_MESSAGES, Constants.COUNT_ELEMENTS_IN_ARRAY, 2);
+        Client client = new Client(Constants.COUNT_QUERIES, Constants.WAIT_BETWEEN_MESSAGES, 1000, 2);
         client.run();
     }
 
